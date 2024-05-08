@@ -27,6 +27,7 @@ from .qwen2 import qwen2_loader, qwen2_model, qwen2_quantization
 from .rwkv5 import rwkv5_loader, rwkv5_model, rwkv5_quantization
 from .rwkv6 import rwkv6_loader, rwkv6_model, rwkv6_quantization
 from .stable_lm import stablelm_loader, stablelm_model, stablelm_quantization
+from .whisper_tiny import whisper_loader, whisper_model, whisper_quantization
 
 ModelConfig = Any
 """A ModelConfig is an object that represents a model architecture. It is required to have
@@ -355,4 +356,19 @@ MODELS: Dict[str, Model] = {
             "awq": eagle_quantization.awq_quant,
         },
     ),
+    "whisper-tiny": Model(
+        name="whisper-tiny",
+        model=whisper_model.WhisperForConditionalGeneration,
+        config=whisper_model.WhisperConfig,
+        source={
+            "huggingface-torch": whisper_loader.huggingface,
+            "huggingface-safetensor": whisper_loader.huggingface,
+            "awq": whisper_loader.awq,
+        },
+        quantize={
+            "no-quant": whisper_quantization.no_quant,
+            "group-quant": whisper_quantization.group_quant,
+            "awq": whisper_quantization.awq_quant,
+        },
+    )
 }

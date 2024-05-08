@@ -51,6 +51,10 @@ class MLCChatConfig:  # pylint: disable=too-many-instance-attributes
     pad_token_id: int = None
     bos_token_id: int = None
     eos_token_id: int = None
+    decoder_start_token_id: int = None
+    suppress_tokens: List[int] = None
+    forced_decoder_ids: List[List[int]] = None
+    begin_suppress_tokens: List[int] = None
     tokenizer_files: List[str] = dataclasses.field(default_factory=list)
     # Version control
     version: str = VERSION
@@ -176,7 +180,7 @@ def gen_config(  # pylint: disable=too-many-locals,too-many-arguments,too-many-b
         conv_template=conversation,
     )
     # Step 2. Load `generation_config.json` and `config.json` for text-generation related configs
-    for generation_config_filename in ["generation_config.json", "config.json"]:
+    for generation_config_filename in ["config.json", "generation_config.json"]:
         generation_config = config.parent / generation_config_filename
         if generation_config.exists():
             with generation_config.open("r", encoding="utf-8") as in_file:
@@ -310,4 +314,5 @@ CONV_TEMPLATES = {
     "gemma_instruction",
     "orion",
     "llava",
+    "whisper-tiny"
 }
